@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+option csharp_namespace = "ProjectService.Protos";
+
+package project;
+
+service ProjectService {
+  rpc GetProjects (GetProjectsRequest) returns (GetProjectsResponse);
+  rpc GetProject (GetProjectRequest) returns (GetProjectResponse);
+  rpc GetMyProjects (GetMyProjectsRequest) returns (GetMyProjectsResponse);
+  rpc GetProjectVolunteers (GetProjectVolunteersRequest) returns (GetProjectVolunteersResponse);
+}
+
+message GetProjectsRequest {
+  int32 page_index = 1;
+  int32 page_size = 2;
+  string category_id = 3;
+  string search_term = 4;
+}
+
+message ProjectSummary {
+  string project_id = 1;
+  string title = 2;
+  string description = 3;
+  string cover_uri = 4;
+  string location = 5;
+  string category = 6;
+  string start_date = 7;
+  string end_date = 8;
+  string status = 9;
+  int32 enrolled_count = 10;
+  int32 max_volunteers = 11;
+}
+
+message GetProjectsResponse {
+  repeated ProjectSummary projects = 1;
+  int32 total_projects = 2;
+  int32 current_page = 3;
+  int32 page_count = 4;
+  int32 page_size = 5;
+}
+
+message GetProjectRequest {
+  string project_id = 1;
+}
+
+message GetProjectResponse {
+  string project_id = 1;
+  string title = 2;
+  string description = 3;
+  string cover_uri = 4;
+  string location = 5;
+  string category = 6;
+  string start_date = 7;
+  string end_date = 8;
+  string status = 9;
+  int32 enrolled_count = 10;
+  int32 max_volunteers = 11;
+  string organizer_id = 12;
+  string organizer_name = 13;
+  string organizer_pfp_uri = 14;
+  string created_at = 15;
+}
+
+message GetMyProjectsRequest {
+  string organizer_id = 1;
+}
+
+message MyProject {
+  string project_id = 1;
+  string title = 2;
+  string location = 3;
+  string start_date = 4;
+  string end_date = 5;
+  string status = 6;
+  int32 enrolled_count = 7;
+  int32 max_volunteers = 8;
+}
+
+message GetMyProjectsResponse {
+  repeated MyProject projects = 1;
+}
+
+message GetProjectVolunteersRequest {
+  string project_id = 1;
+  string organizer_id = 2;
+  int32 page_index = 3;
+  int32 page_size = 4;
+}
+
+message EnrolledVolunteer {
+  string volunteer_id = 1;
+  string full_name = 2;
+  string email = 3;
+  string enrolled_at = 4;
+  string enrollment_status = 5;
+}
+
+message GetProjectVolunteersResponse {
+  repeated EnrolledVolunteer volunteers = 1;
+  int32 total_volunteers = 2;
+  int32 current_page = 3;
+  int32 page_count = 4;
+  int32 page_size = 5;
+}

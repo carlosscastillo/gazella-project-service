@@ -1,0 +1,17 @@
+services:
+  project-service:
+    build:
+      context: .
+      target: development
+    container_name: project_service
+    restart: unless-stopped
+    ports:
+      - "7100:7100"
+    env_file:
+      - .env
+    networks:
+      - gazella-net
+
+networks:
+  gazella-net:
+    external: true

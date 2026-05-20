@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+option csharp_namespace = "ProjectService.Protos";
+
+package management;
+
+service ProjectManagementService {
+  rpc CreateProject (CreateProjectRequest) returns (CreateProjectResponse);
+  rpc UpdateProject (UpdateProjectRequest) returns (UpdateProjectResponse);
+  rpc CancelProject (CancelProjectRequest) returns (CancelProjectResponse);
+}
+
+message CreateProjectRequest {
+  string title = 1;
+  string description = 2;
+  string cover_uri = 3;
+  string location = 4;
+  string category_id = 5;
+  string organizer_id = 6;
+  string organizer_name = 7;
+  string organizer_pfp_uri = 8;
+  string start_date = 9;
+  string end_date = 10;
+  int32 max_volunteers = 11;
+}
+
+message CreateProjectResponse {
+  string project_id = 1;
+  string message = 2;
+}
+
+message UpdateProjectRequest {
+  string project_id = 1;
+  string organizer_id = 2;
+  string title = 3;
+  string description = 4;
+  string cover_uri = 5;
+  string location = 6;
+  string category_id = 7;
+  string start_date = 8;
+  string end_date = 9;
+  int32 max_volunteers = 10;
+}
+
+message UpdateProjectResponse {
+  bool is_success = 1;
+  string message = 2;
+}
+
+message CancelProjectRequest {
+  string project_id = 1;
+  string organizer_id = 2;
+}
+
+message CancelProjectResponse {
+  string project_status = 1;
+  string message = 2;
+}

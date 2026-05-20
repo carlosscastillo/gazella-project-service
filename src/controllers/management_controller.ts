@@ -59,7 +59,8 @@ async function createProject(service: ManagementService, data: CreateProjectInpu
         organizer_pfp_uri: data.organizerPfpUri || "",
         start_date: data.startDate,
         end_date: data.endDate,
-        max_volunteers: data.maxVolunteers
+        max_volunteers: data.maxVolunteers,
+        is_draft: data.isDraft
     };
 
     const response = await service.executeCall(service.client.createProject(request));

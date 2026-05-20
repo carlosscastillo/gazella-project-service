@@ -22,6 +22,7 @@ message CreateProjectRequest {
   string start_date = 9;
   string end_date = 10;
   int32 max_volunteers = 11;
+  bool is_draft = 12;
 }
 
 message CreateProjectResponse {

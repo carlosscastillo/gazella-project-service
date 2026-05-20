@@ -12,6 +12,7 @@ export interface CreateProjectRequest {
   start_date: string;
   end_date: string;
   max_volunteers: number;
+  is_draft: boolean;
 }
 
 export interface CreateProjectResponse {

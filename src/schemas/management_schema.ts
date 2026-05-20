@@ -21,7 +21,8 @@ export const CreateProjectSchema = z.object({
     endDate: isoDateString,
     maxVolunteers: z.int()
         .min(1, { error: "Max volunteers must be at least 1" })
-        .max(10000, { error: "Max volunteers cannot exceed 10000" })
+        .max(10000, { error: "Max volunteers cannot exceed 10000" }),
+    isDraft: z.boolean().optional().default(false)
 });
 
 export type CreateProjectInput = z.infer<typeof CreateProjectSchema>

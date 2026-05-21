@@ -13,6 +13,8 @@ service RegistrationService {
 message SignUpRequest {
   string project_id = 1;
   string volunteer_id = 2;
+  string volunteer_full_name = 3;
+  string volunteer_email = 4;
 }
 
 message SignUpResponse {

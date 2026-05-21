@@ -3,6 +3,8 @@ import * as grpc from '@grpc/grpc-js';
 export interface SignUpRequest {
   project_id: string;
   volunteer_id: string;
+  volunteer_full_name: string;
+  volunteer_email: string;
 }
 
 export interface SignUpResponse {

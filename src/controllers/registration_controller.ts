@@ -29,7 +29,9 @@ export const makeSignUpController = (client: RegistrationGrpcClient, executeCall
 
         const request: SignUpRequest = {
             project_id: req.params.projectId,
-            volunteer_id: req.auth?.sub as string
+            volunteer_id: req.auth?.sub as string,
+            volunteer_full_name: (req.auth?.["name"] as string) ?? "",
+            volunteer_email: req.auth?.email as string ?? ""
         };
 
         const response = await executeCall(client.signUp(request));

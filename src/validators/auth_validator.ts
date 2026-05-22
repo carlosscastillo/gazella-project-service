@@ -2,7 +2,7 @@ import { expressjwt, GetVerificationKey } from "express-jwt";
 import jwksRsa from "jwks-rsa";
 import "dotenv/config";
 
-const ISSUER_URL = process.env["ISSUER_URL"] || "http://localhost:4000/oidc";
+const ISSUER_URL = process.env["ISSUER_URL"];
 
 export const requireAuth = expressjwt({
     secret: jwksRsa.expressJwtSecret({

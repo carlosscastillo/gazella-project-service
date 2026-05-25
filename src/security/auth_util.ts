@@ -24,7 +24,7 @@ export function processAuthorization(auth: ControllerAuthorization): Authorizati
     const roles = auth.roles || [];
     const permissions = auth.permissions || [];
     const isAuthorized = 
-        roles.some(role => auth.allowedRoles.map(r => r.toLowerCase().includes(role.toLowerCase()))) || 
+        roles.some(role => auth.allowedRoles.some(r => r.toLowerCase() === role.toLowerCase())) || 
         permissions.some((p) => p.toLowerCase() === auth.fineGrainedPermission.toLowerCase());
 
     if (!isAuthorized) {

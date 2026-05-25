@@ -45,7 +45,8 @@ export const validateParams = (schema: z.ZodType) =>
 export const validateQuery = (schema: z.ZodType) =>
     async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-            req.query = await schema.parseAsync(req.query) as any;
+            const parsed = await schema.parseAsync(req.query);
+            (req as any).parsedQuery = parsed;
             next();
         } catch (error) {
             if (error instanceof z.ZodError) {

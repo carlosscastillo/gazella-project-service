@@ -13,7 +13,7 @@ import { Organizer, ManageProjects } from "../security/authorizations.js";
 
 export const makeGetProjectsController = (client: ProjectGrpcClient, executeCall: ExecuteCall) => {
     return async (req: Request, res: Response): Promise<void> => {
-        const { pageIndex, pageSize, categoryId, searchTerm } = req.query as unknown as GetProjectsQueryInput;
+        const { pageIndex, pageSize, categoryId, searchTerm } = (req as any).parsedQuery as GetProjectsQueryInput;
 
         const request: GetProjectsRequest = {
             page_index: pageIndex,
@@ -90,7 +90,7 @@ export const makeGetProjectVolunteersController = (client: ProjectGrpcClient, ex
             return;
         }
 
-        const { pageIndex, pageSize } = req.query as unknown as GetProjectVolunteersQueryInput;
+        const { pageIndex, pageSize } = (req as any).parsedQuery as GetProjectVolunteersQueryInput;
 
         const request: GetProjectVolunteersRequest = {
             project_id: req.params.projectId,

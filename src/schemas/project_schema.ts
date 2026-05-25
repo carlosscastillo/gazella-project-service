@@ -18,7 +18,10 @@ export const GetProjectsQuerySchema = z.object({
         .optional()
         .default(10),
     categoryId: z.string().optional().default(""),
-    searchTerm: z.string().trim().max(100).optional().default("")
+    searchTerm: z.string().trim().max(100).optional().default(""),
+    location: z.string().trim().max(256).optional().default(""),
+    startDate: z.string().trim().optional().default(""),
+    orderBy: z.enum(["newest", "soonest"]).optional().default("newest")
 });
 
 export type GetProjectsQueryInput = z.infer<typeof GetProjectsQuerySchema>
@@ -34,6 +37,8 @@ export const GetProjectVolunteersQuerySchema = z.object({
         .max(50, { error: "Page size cannot be higher than 50" })
         .optional()
         .default(10),
+    searchTerm: z.string().trim().max(100).optional().default(""),
+    statusFilter: z.enum(["all", "confirmed", "cancelled"]).optional().default("all")
 });
 
 export type GetProjectVolunteersQueryInput = z.infer<typeof GetProjectVolunteersQuerySchema>

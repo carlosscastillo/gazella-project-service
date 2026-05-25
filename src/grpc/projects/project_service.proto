@@ -16,6 +16,9 @@ message GetProjectsRequest {
   int32 page_size = 2;
   string category_id = 3;
   string search_term = 4;
+  string location = 5;
+  string start_date = 6;
+  string order_by = 7;
 }
 
 message ProjectSummary {
@@ -86,6 +89,8 @@ message GetProjectVolunteersRequest {
   string organizer_id = 2;
   int32 page_index = 3;
   int32 page_size = 4;
+  string search_term = 5;
+  string status_filter = 6;
 }
 
 message EnrolledVolunteer {

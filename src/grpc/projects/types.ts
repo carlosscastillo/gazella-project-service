@@ -5,6 +5,9 @@ export interface GetProjectsRequest {
   page_size: number;
   category_id: string;
   search_term: string;
+  location: string;
+  start_date: string;
+  order_by: string;
 }
 
 export interface ProjectSummary {
@@ -75,6 +78,8 @@ export interface GetProjectVolunteersRequest {
   organizer_id: string;
   page_index: number;
   page_size: number;
+  search_term: string;
+  status_filter: string;
 }
 
 export interface EnrolledVolunteer {

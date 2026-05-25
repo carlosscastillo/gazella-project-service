@@ -13,13 +13,17 @@ import { Organizer, ManageProjects } from "../security/authorizations.js";
 
 export const makeGetProjectsController = (client: ProjectGrpcClient, executeCall: ExecuteCall) => {
     return async (req: Request, res: Response): Promise<void> => {
-        const { pageIndex, pageSize, categoryId, searchTerm } = (req as any).parsedQuery as GetProjectsQueryInput;
+        const { pageIndex, pageSize, categoryId, searchTerm, location, startDate, orderBy } = 
+            (req as any).parsedQuery as GetProjectsQueryInput;
 
         const request: GetProjectsRequest = {
             page_index: pageIndex,
             page_size: pageSize,
             category_id: categoryId,
-            search_term: searchTerm
+            search_term: searchTerm,
+            location: location,
+            start_date: startDate,
+            order_by: orderBy
         };
 
         const response = await executeCall(client.getProjects(request));
@@ -90,13 +94,16 @@ export const makeGetProjectVolunteersController = (client: ProjectGrpcClient, ex
             return;
         }
 
-        const { pageIndex, pageSize } = (req as any).parsedQuery as GetProjectVolunteersQueryInput;
+        const { pageIndex, pageSize, searchTerm, statusFilter } = 
+            (req as any).parsedQuery as GetProjectVolunteersQueryInput;
 
         const request: GetProjectVolunteersRequest = {
             project_id: req.params.projectId,
             organizer_id: req.auth?.sub as string,
             page_index: pageIndex,
-            page_size: pageSize
+            page_size: pageSize,
+            search_term: searchTerm,
+            status_filter: statusFilter
         };
 
         const response = await executeCall(client.getProjectVolunteers(request));

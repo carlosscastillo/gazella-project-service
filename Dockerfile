@@ -17,7 +17,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY --from=builder /app/dist ./dist
 USER project_service
-EXPOSE 7100
+EXPOSE 12000
 
 FROM runner-base AS development
 

@@ -67,6 +67,7 @@ export interface MyProject {
   status: string;
   enrolled_count: number;
   max_volunteers: number;
+  cover_uri: string;
 }
 
 export interface GetMyProjectsResponse {

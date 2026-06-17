@@ -34,6 +34,7 @@ export interface MyEnrollment {
   project_status: string;
   enrollment_status: string;
   enrolled_at: string;
+  cover_uri: string;
 }
 
 export interface GetMyEnrollmentsResponse {

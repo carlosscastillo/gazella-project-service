@@ -44,6 +44,7 @@ message MyEnrollment {
   string project_status = 5;
   string enrollment_status = 6;
   string enrolled_at = 7;
+  string cover_uri = 8;
 }
 
 message GetMyEnrollmentsResponse {

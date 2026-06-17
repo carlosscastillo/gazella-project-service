@@ -78,6 +78,7 @@ message MyProject {
   string status = 6;
   int32 enrolled_count = 7;
   int32 max_volunteers = 8;
+  string cover_uri = 9;
 }
 
 message GetMyProjectsResponse {

@@ -33,8 +33,8 @@ const createProject = makeCreateProjectController(managementClient, executeGrpcC
 const updateProject = makeUpdateProjectController(managementClient, executeGrpcCall);
 const cancelProject = makeCancelProjectController(managementClient, executeGrpcCall);
 
-const signUp = makeSignUpController(registrationClient, executeGrpcCall);
-const cancelRegistration = makeCancelRegistrationController(registrationClient, executeGrpcCall);
+const signUp = makeSignUpController(registrationClient, projectClient, executeGrpcCall);
+const cancelRegistration = makeCancelRegistrationController(registrationClient, projectClient, executeGrpcCall);
 const getMyEnrollments = makeGetMyEnrollmentsController(registrationClient, executeGrpcCall);
 
 /**

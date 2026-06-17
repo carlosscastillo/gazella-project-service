@@ -10,6 +10,7 @@ import { CreateProjectInput, UpdateProjectInput } from "../schemas/management_sc
 import { ProjectIdInput } from "../schemas/project_schema.js";
 import { ControllerAuthorization, processAuthorization } from "../security/auth_util.js";
 import { Organizer, ManageProjects } from "../security/authorizations.js";
+import { publishEvent } from "../messaging/rabbitmq.js";
 
 type ManagementService = {
     client: ProjectManagementGrpcClient;
@@ -143,6 +144,12 @@ async function cancelProject(service: ManagementService, projectId: string, orga
 
     const response = await service.executeCall(service.client.cancelProject(request));
     console.log(`[INFO] Project cancelled. Id: ${projectId}, Status: ${response.project_status}`);
+
+    await publishEvent("project.cancelled", {
+        projectId: projectId,
+        organizerId: organizerId,
+        timestamp: new Date().toISOString()
+    });
 
     return response;
 }

@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express"
 import { swaggerOptions } from "./swagger.js"
 import routes from "./routes.js"
 import { globalErrorHandler } from "./handlers/error_handler.js"
+import { connectRabbitMQ } from "./messaging/rabbitmq.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ async function startServer() {
 
         app.use(globalErrorHandler);
 
+        await connectRabbitMQ();
         const PORT = process.env["PORT"] || 7100;
         app.listen(PORT, () => {
             console.log(`Project service listening on ${PORT}`);

@@ -11,6 +11,7 @@ import { ProjectIdInput } from "../schemas/project_schema.js";
 import { ControllerAuthorization, processAuthorization } from "../security/auth_util.js";
 import { Organizer, ManageProjects } from "../security/authorizations.js";
 import { publishEvent } from "../messaging/rabbitmq.js";
+import { ProjectGrpcClient } from "../grpc/projects/client.js";
 
 type ManagementService = {
     client: ProjectManagementGrpcClient;
@@ -113,7 +114,7 @@ async function updateProject(service: ManagementService, projectId: string, orga
     return response;
 }
 
-export const makeCancelProjectController = (client: ProjectManagementGrpcClient, executeCall: ExecuteCall) => {
+export const makeCancelProjectController = (client: ProjectManagementGrpcClient, projectClient: ProjectGrpcClient, executeCall: ExecuteCall) => {
     return async (req: Request<ProjectIdInput>, res: Response): Promise<void> => {
         const auth: ControllerAuthorization = {
             userId: req.auth?.sub,
@@ -130,13 +131,13 @@ export const makeCancelProjectController = (client: ProjectManagementGrpcClient,
             return;
         }
 
-        const response = await cancelProject({ client, executeCall }, req.params.projectId, req.auth?.sub as string);
+        const response = await cancelProject({ client, executeCall }, projectClient, req.params.projectId, req.auth?.sub as string);
 
         res.status(200).json({ message: response.message, status: response.project_status });
     };
 };
 
-async function cancelProject(service: ManagementService, projectId: string, organizerId: string) {
+async function cancelProject(service: ManagementService, projectClient: ProjectGrpcClient, projectId: string, organizerId: string) {
     const request: CancelProjectRequest = {
         project_id: projectId,
         organizer_id: organizerId
@@ -145,11 +146,37 @@ async function cancelProject(service: ManagementService, projectId: string, orga
     const response = await service.executeCall(service.client.cancelProject(request));
     console.log(`[INFO] Project cancelled. Id: ${projectId}, Status: ${response.project_status}`);
 
-    await publishEvent("project.cancelled", {
-        projectId: projectId,
-        organizerId: organizerId,
-        timestamp: new Date().toISOString()
-    });
+    try {
+        const volunteersResponse = await service.executeCall(
+            projectClient.getProjectVolunteers({
+                project_id: projectId,
+                organizer_id: organizerId,
+                page_index: 1,
+                page_size: 1000,
+                search_term: "",
+                status_filter: "confirmed"
+            })
+        );
+
+        const projectData = await service.executeCall(
+            projectClient.getProject({ project_id: projectId })
+        );
+
+        for (const volunteer of volunteersResponse.volunteers) {
+            await publishEvent("project.cancelled.volunteer", {
+                eventKey: "PROJECT_CANCELLED",
+                projectId,
+                organizerId,
+                volunteerId: volunteer.volunteer_id,
+                volunteerEmail: volunteer.email,
+                volunteerName: volunteer.full_name,
+                projectTitle: projectData.title,
+            });
+        }
+        console.log(`[INFO] Published cancellation events for ${volunteersResponse.volunteers.length} volunteers`);
+    } catch (err) {
+        console.warn("[WARN] Could not publish volunteer cancellation events:", err);
+    }
 
     return response;
 }

@@ -47,7 +47,8 @@ export const makeSignUpController = (client: RegistrationGrpcClient, projectClie
                 organizerId: project.organizer_id,
                 projectTitle: project.title,
                 volunteerId: request.volunteer_id,
-                volunteerName: request.volunteer_full_name
+                volunteerName: request.volunteer_full_name,
+                volunteerEmail: request.volunteer_email,
             });
         } catch (err) {
             console.warn("[WARN] Could not publish enrollment event:", err);
@@ -90,7 +91,8 @@ export const makeCancelRegistrationController = (client: RegistrationGrpcClient,
                 organizerId: project.organizer_id,
                 projectTitle: project.title,
                 volunteerId: request.volunteer_id,
-                volunteerName: req.auth?.["name"] as string ?? ""
+                volunteerName: req.auth?.["name"] as string ?? "",
+                volunteerEmail: req.auth?.email as string ?? "",
             });
         } catch (err) {
             console.warn("[WARN] Could not publish cancellation event:", err);

@@ -31,7 +31,7 @@ const getProjectVolunteers = makeGetProjectVolunteersController(projectClient, e
 
 const createProject = makeCreateProjectController(managementClient, executeGrpcCall);
 const updateProject = makeUpdateProjectController(managementClient, executeGrpcCall);
-const cancelProject = makeCancelProjectController(managementClient, executeGrpcCall);
+const cancelProject = makeCancelProjectController(managementClient, projectClient, executeGrpcCall);
 
 const signUp = makeSignUpController(registrationClient, projectClient, executeGrpcCall);
 const cancelRegistration = makeCancelRegistrationController(registrationClient, projectClient, executeGrpcCall);
